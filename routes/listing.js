@@ -38,4 +38,4 @@ router.get("/new",isLoggedIn,listingController.renderNewForm);
  );
  
 
-module.exports = {router};
+module.exports = router;

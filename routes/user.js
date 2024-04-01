@@ -25,4 +25,4 @@ userController.Login);
 
 //logout
 router.get("/logout",userController.Logout);
-module.exports = {router};
+module.exports = router;
