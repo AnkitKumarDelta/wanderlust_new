@@ -50,9 +50,9 @@ module.exports.createpost = async(req,res,next)=>{
  //above is also a method to add documents from from to list
  //below is also a method for same by making all input fields of a from an object
  
- const newlisting = new Listing(req.body.listing);
- newlisting.image={url,filename};
+ let newlisting = new Listing(req.body.listing);
  newlisting.owner = req.user._id;//passport saved user info in _id is id of unique user
+ newlisting.image={url,filename};
  newlisting.geometry = response.body.features[0].geometry;
 
  await newlisting.save();

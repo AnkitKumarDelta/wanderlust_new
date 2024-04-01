@@ -24,21 +24,21 @@ const userRouter = require("./routes/user.js");
 const atlasUrl = process.env.ATLASDB_URL;
 const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
-app.use(methodOverride("_method"));
-
-async function main() {
-    await mongoose.connect(atlasUrl || MONGO_URL);
-}
-
-main().then(() => {
-    console.log("connected to DB");
-}).catch((err) => console.log(err));
-
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.engine("ejs", ejsMate);
+app.use(methodOverride("_method"));
+
+main().then(() => {
+    console.log("connected to DB");
+}).catch((err) => console.log(err));
+
+async function main() {
+    await mongoose.connect(atlasUrl || MONGO_URL);
+}
+
 
 const store = MongoStore.create({
     mongoUrl: atlasUrl || MONGO_URL,
@@ -81,13 +81,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.listen(8080, () => {
-    console.log("server is listening on port 8080");
-});
-
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+
+app.listen(8080, () => {
+    console.log("server is listening on port 8080");
+});
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "page not found"));
